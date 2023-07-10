@@ -22,7 +22,7 @@ public class Bike {
 
     @CommandHandler
     public Bike(RegisterBikeCommand command) {
-        apply(new BikeRegisteredEvent(command.getBikeId(), command.getLocation()));
+        apply(new BikeRegisteredEvent(command.bikeId(), command.location()));
     }
 
     @CommandHandler
@@ -30,7 +30,7 @@ public class Bike {
         if (!this.isAvailable) {
             throw new IllegalStateException("Bike is already rented");
         }
-        apply(new BikeRentedEvent(command.getBikeId(), command.getRenter()));
+        apply(new BikeRentedEvent(command.bikeId(), command.renter()));
     }
 
     @CommandHandler
@@ -38,12 +38,12 @@ public class Bike {
         if (this.isAvailable) {
             throw new IllegalStateException("Bike was already returned");
         }
-        apply(new BikeReturnedEvent(command.getBikeId(), command.getLocation()));
+        apply(new BikeReturnedEvent(command.bikeId(), command.location()));
     }
 
     @EventSourcingHandler
     protected void handle(BikeRegisteredEvent event) {
-        this.bikeId = event.getBikeId();
+        this.bikeId = event.bikeId();
         this.isAvailable = true;
     }
 

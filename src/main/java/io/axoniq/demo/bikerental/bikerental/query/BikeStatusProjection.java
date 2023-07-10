@@ -19,22 +19,22 @@ public class BikeStatusProjection {
 
     @EventHandler
     public void on(BikeRegisteredEvent event) {
-        bikeStatusRepository.save(new BikeStatus(event.getBikeId(), event.getLocation()));
+        bikeStatusRepository.save(new BikeStatus(event.bikeId(), event.location()));
     }
 
     @EventHandler
     public void on(BikeRentedEvent event) {
-        bikeStatusRepository.findById(event.getBikeId()).map(bs -> {
-            bs.setRenter(event.getRenter());
+        bikeStatusRepository.findById(event.bikeId()).map(bs -> {
+            bs.setRenter(event.renter());
             return bs;
         });
     }
 
     @EventHandler
     public void on(BikeReturnedEvent event) {
-        bikeStatusRepository.findById(event.getBikeId()).map(bs -> {
+        bikeStatusRepository.findById(event.bikeId()).map(bs -> {
             bs.setRenter(null);
-            bs.setLocation(event.getLocation());
+            bs.setLocation(event.location());
             return bs;
         });
     }

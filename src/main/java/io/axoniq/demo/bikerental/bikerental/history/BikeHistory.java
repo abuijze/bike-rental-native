@@ -2,9 +2,9 @@ package io.axoniq.demo.bikerental.bikerental.history;
 
 import org.springframework.context.annotation.Profile;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
 import java.time.Instant;
 
 @Entity

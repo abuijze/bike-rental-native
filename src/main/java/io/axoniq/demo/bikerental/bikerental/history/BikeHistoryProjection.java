@@ -7,13 +7,11 @@ import org.axonframework.eventhandling.EventHandler;
 import org.axonframework.eventhandling.Timestamp;
 import org.axonframework.queryhandling.QueryHandler;
 import org.axonframework.queryhandling.QueryUpdateEmitter;
-import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import java.time.Instant;
 import java.util.List;
 
-@Profile("history")
 @Component
 public class BikeHistoryProjection {
 
@@ -27,12 +25,12 @@ public class BikeHistoryProjection {
 
     @EventHandler
     public void handle(BikeRegisteredEvent event, @Timestamp Instant timestamp) {
-        bikeHistoryRepository.save(new BikeHistory(event.getBikeId(), timestamp, "Bike registered in " + event.getLocation()));
+        bikeHistoryRepository.save(new BikeHistory(event.bikeId(), timestamp, "Bike registered in " + event.location()));
     }
 
     @EventHandler
     public void handle(BikeRentedEvent event, @Timestamp Instant timestamp) {
-        BikeHistory newEntry = new BikeHistory(event.getBikeId(), timestamp, "Bike rented out to " + event.getRenter());
+        BikeHistory newEntry = new BikeHistory(event.bikeId(), timestamp, "Bike rented out to " + event.renter());
         bikeHistoryRepository.save(newEntry);
 
         updateEmitter.emit(m -> "locationHistory".equals(m.getQueryName())
@@ -42,7 +40,7 @@ public class BikeHistoryProjection {
 
     @EventHandler
     public void handle(BikeReturnedEvent event, @Timestamp Instant timestamp) {
-        BikeHistory newEntry = new BikeHistory(event.getBikeId(), timestamp, "Bike returned in " + event.getLocation());
+        BikeHistory newEntry = new BikeHistory(event.bikeId(), timestamp, "Bike returned in " + event.location());
         bikeHistoryRepository.save(newEntry);
 
         updateEmitter.emit(m -> "locationHistory".equals(m.getQueryName())
